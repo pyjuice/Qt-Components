@@ -60,12 +60,10 @@ class RadialBar(QQuickPaintedItem):
     def paint(self, painter):
         painter.save()
 
-        #var startAngle
-        #var spanAngle
-        size = self.width() # qMin(self.width(), self.height())       
+        size = min(self.width(), self.height())       
         self.setWidth(size)
         self.setHeight(size)
-        rect = QRectF(0, 0, self.width(), self.height()) #.adjusted(1, 1, -1, -1) #self.boundingRect()
+        rect = QRectF(0, 0, self.width(), self.height()) #self.boundingRect()
         painter.setRenderHint(QPainter.Antialiasing)
         pen = painter.pen()
         pen.setCapStyle(self._PenStyle)
@@ -84,7 +82,7 @@ class RadialBar(QQuickPaintedItem):
         offset = self._DialWidth / 2
         if self._DialType == DialType.MinToMax:
             painter.drawArc(rect.adjusted(offset, offset, -offset, -offset), startAngle * 16, spanAngle * 16)
-        elif self._DialType == FullDial:
+        elif self._DialType == DialType.FullDial:
             painter.drawArc(rect.adjusted(offset, offset, -offset, -offset), -90 * 16, -360 * 16)
         else:
             pass
@@ -115,7 +113,7 @@ class RadialBar(QQuickPaintedItem):
         painter.save()
         pen.setWidth(self._DialWidth)
         pen.setColor(self._ProgressColor)
-        valueAngle = ((self._Value - self._MinValue)/(self._MaxValue - self._MinValue)) * spanAngle  #Map value to angle range
+        valueAngle = float(float(self._Value - self._MinValue)/float(self._MaxValue - self._MinValue)) * float(spanAngle)  #Map value to angle range
         painter.setPen(pen)
         painter.drawArc(rect.adjusted(offset, offset, -offset, -offset), startAngle * 16, valueAngle * 16)
         painter.restore()
@@ -176,7 +174,7 @@ class RadialBar(QQuickPaintedItem):
         self._MaxValue = value
         self.maxValueChanged.emit()
 
-    @QtCore.pyqtProperty(int, notify=valueChanged)
+    @QtCore.pyqtProperty(float, notify=valueChanged)
     def value(self):
         return self._Value
 
