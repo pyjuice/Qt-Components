@@ -7,12 +7,12 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-class DialType():
-    FullDial = 0
-    MinToMax = 1
-    NoDial = 2
-
 class RadialBar(QQuickPaintedItem):
+
+    class DialType():
+        FullDial = 0
+        MinToMax = 1
+        NoDial = 2
 
     sizeChanged = pyqtSignal()
     startAngleChanged = pyqtSignal()
@@ -54,7 +54,7 @@ class RadialBar(QQuickPaintedItem):
         self._SuffixText = ""
         self._ShowText = True
         self._PenStyle = Qt.FlatCap
-        self._DialType = DialType.MinToMax
+        self._DialType = RadialBar.DialType.MinToMax
         self._TextFont = QFont()
 
     def paint(self, painter):
@@ -69,7 +69,7 @@ class RadialBar(QQuickPaintedItem):
         pen.setCapStyle(self._PenStyle)
 
         startAngle = -90 - self._StartAngle
-        if DialType.FullDial != self._DialType:
+        if RadialBar.DialType.FullDial != self._DialType:
             spanAngle = 0 - self._SpanAngle
         else:
             spanAngle = -360
@@ -80,9 +80,9 @@ class RadialBar(QQuickPaintedItem):
         pen.setColor(self._DialColor)
         painter.setPen(pen)
         offset = self._DialWidth / 2
-        if self._DialType == DialType.MinToMax:
+        if self._DialType == RadialBar.DialType.MinToMax:
             painter.drawArc(rect.adjusted(offset, offset, -offset, -offset), startAngle * 16, spanAngle * 16)
-        elif self._DialType == DialType.FullDial:
+        elif self._DialType == RadialBar.DialType.FullDial:
             painter.drawArc(rect.adjusted(offset, offset, -offset, -offset), -90 * 16, -360 * 16)
         else:
             pass
@@ -273,7 +273,7 @@ class RadialBar(QQuickPaintedItem):
         self._PenStyle = style
         self.penStyleChanged.emit()
 
-    @QtCore.pyqtProperty(str, notify=dialTypeChanged)
+    @QtCore.pyqtProperty(int, notify=dialTypeChanged)
     def dialType(self):
         return self._DialType
 

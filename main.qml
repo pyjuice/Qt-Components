@@ -1,11 +1,5 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.2
 import SDK 1.0
-
-// import QtQuick.Window 2.2
-// import CustomControls 1.0
-// import QtQuick.Controls 2.0
-// import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 
 Rectangle {
@@ -60,6 +54,7 @@ Rectangle {
                 maxValue: maxVal
                 value: actVal
                 suffixText: suffix
+                dialType: RadialBar.DialType.MinToMax
                 textFont {
                     family: "Halvetica"
                     italic: false
